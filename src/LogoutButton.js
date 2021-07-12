@@ -9,17 +9,9 @@ function LogoutButton() {
     } = useAuth0();
 
     return isAuthenticated && (
-        <>
-            <Nav.Link ><Link to="/profile">Profile </Link></Nav.Link>
-
-            <Navbar.Collapse className="justify-content-end">
-                <Button onClick={() => {
-                    logout({ returnTo: window.location.origin });
-                }} variant="danger">Log out</Button>
-
-            </Navbar.Collapse>
-
-        </>
+        <Button onClick={() => {
+            logout({ returnTo: window.location.origin });
+        }} variant="danger">Log out</Button>
     );
 }
 
