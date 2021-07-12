@@ -1,3 +1,9 @@
-.jumbotron{
+.jumbotron {
   margin-bottom: 0;
+}
+.fav-books {
+  display: flex;
+}
+div.fav-books div img {
+  height: 28em;
 }
