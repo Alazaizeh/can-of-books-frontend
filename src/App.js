@@ -1,16 +1,13 @@
-import React from 'react';
-import Header from './Header';
-// import IsLoadingAndError from './IsLoadingAndError';
-import Footer from './Footer';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
-import User from './User';
-import Profile from './Profile';
-class App extends React.Component {
+import React from "react";
+import Header from "./Header";
+import "bootstrap/dist/css/bootstrap.min.css";
 
+// import IsLoadingAndError from './IsLoadingAndError';
+import Footer from "./Footer";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import User from "./User";
+import Profile from "./Profile";
+class App extends React.Component {
   render() {
     return (
       <>
