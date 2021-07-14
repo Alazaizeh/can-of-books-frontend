@@ -4,28 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { withAuth0 } from "@auth0/auth0-react";
 
-class BookForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: false,
-    };
-  }
-
-  handleClose = () => {
-    this.setState({
-      show: false,
-    });
-  };
-
-  handleShow = () => {
-    this.setState({
-      show: true,
-    });
-  };
-
+class EditForm extends Component {
   submitForm = (e) => {
-    this.handleClose();
+    this.props.handleClose();
     e.preventDefault();
 
     let book = {
@@ -34,46 +15,51 @@ class BookForm extends Component {
       status: e.target.status.value,
       img: e.target.image.value,
     };
-    console.log(book);
-    axios
-      .post(
-        `${process.env.REACT_APP_SERVER}/addBook?email=${this.props.auth0.user.email}`,
-        book
-      )
-      .then((resultData) => {
-        this.props.renderBooks(resultData);
-      });
+
+    this.props.updateBooks(this.props.index, book);
   };
 
   render() {
     return (
       <>
-        <Button variant="info" onClick={this.handleShow}>
-          Add Book
-        </Button>
-
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal show={this.props.show} onHide={this.props.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Add new Book</Modal.Title>
+            <Modal.Title>Edit Book</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={this.submitForm}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Book</Form.Label>
-                <Form.Control type="text" name="book" />
+                <Form.Control
+                  type="text"
+                  name="book"
+                  defaultValue={this.props.book.name}
+                />
                 {/* <Form.Text className="text-muted">Book Title</Form.Text> */}
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Description</Form.Label>
-                <Form.Control name="description" type="text" />
+                <Form.Control
+                  name="description"
+                  type="text"
+                  defaultValue={this.props.book.description}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Status</Form.Label>
-                <Form.Control name="status" type="text" />
+                <Form.Control
+                  name="status"
+                  type="text"
+                  defaultValue={this.props.book.status}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Image Url</Form.Label>
-                <Form.Control name="image" type="text" />
+                <Form.Control
+                  name="image"
+                  type="text"
+                  defaultValue={this.props.book.img}
+                />
               </Form.Group>
 
               <Button
@@ -96,4 +82,4 @@ class BookForm extends Component {
   }
 }
 
-export default withAuth0(BookForm);
+export default withAuth0(EditForm);

@@ -17,22 +17,25 @@ class MyFavoriteBooks extends React.Component {
   }
   componentDidMount() {
     axios
-      .get(`http://localhost:3002/books?email=${this.props.auth0.user.email}`)
+      .get(
+        `${process.env.REACT_APP_SERVER}/books?email=${this.props.auth0.user.email}`
+      )
       .then((resultData) => {
-        this.updateBooks(resultData);
+        this.renderBooks(resultData);
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  updateBooks = (newBooks) => {
+  renderBooks = (newBooks) => {
     this.setState({
       books: newBooks.data.map((ele, index) => {
         return (
           <Book
             index={index}
             removeBooks={this.removeBooks}
+            updateBooks={this.updateBooks}
             key={index}
             ele={ele}
           />
@@ -43,11 +46,22 @@ class MyFavoriteBooks extends React.Component {
 
   removeBooks = (index) => {
     axios
-      .delete(`http://localhost:3002/deleteBook/${index}`, {
+      .delete(`${process.env.REACT_APP_SERVER}/deleteBook/${index}`, {
         params: { email: this.props.auth0.user.email },
       })
       .then((resultData) => {
-        this.updateBooks(resultData);
+        this.renderBooks(resultData);
+      });
+  };
+
+  updateBooks = (index, bookObj) => {
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER}/updateBook/${index}?email=${this.props.auth0.user.email}`,
+        bookObj
+      )
+      .then((resultData) => {
+        this.renderBooks(resultData);
       });
   };
 
@@ -58,7 +72,8 @@ class MyFavoriteBooks extends React.Component {
         <p>This is a collection of my favorite books</p>
         <BookForm
           removeBooks={this.removeBooks}
-          updateBooks={this.updateBooks}
+          renderBooks={this.renderBooks}
+          updateBook={this.updateBooks}
         />
         <div className="fav-books">{this.state.books} </div>
       </Jumbotron>
